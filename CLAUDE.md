@@ -55,3 +55,7 @@ uv add --dev <package>
 - Set `Bio.Entrez.email` and optionally `Bio.Entrez.api_key` (via `--api-key` flag or `NCBI_API_KEY` env var).
 - All Entrez calls go through `entrez.py` helpers to enforce rate limits.
 - Use `esearch` → `efetch` or `esummary` patterns; avoid fetching large result sets without batching (`retmax`, `usehistory=y`).
+
+### Other
+
+- Always update the README after making changes

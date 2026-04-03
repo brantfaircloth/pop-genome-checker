@@ -20,7 +20,13 @@ def build(
                 rows.append(_row(a, proj, lineage))
         else:
             rows.append(_row(a, None, lineage))
-    return pd.DataFrame(rows)
+
+    df = pd.DataFrame(rows)
+    # Sort by genome quality first (contig N50 desc, falling back to scaffold N50),
+    # then by SRA individual count so assembly quality always takes priority.
+    df["_n50"] = df["contig_n50"].fillna(df["scaffold_n50"]).fillna(0)
+    df = df.sort_values(["_n50", "sra_individuals"], ascending=[False, False]).drop(columns="_n50")
+    return df.reset_index(drop=True)
 
 
 def _row(a: Assembly, proj: SRAProject | None, lineage: dict[str, str]) -> dict:
