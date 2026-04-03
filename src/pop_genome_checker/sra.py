@@ -33,7 +33,7 @@ def search(
 
     on_batch(completed, total) is called after each batch fetch if provided.
     """
-    term = f"txid{taxid}[Organism:exp]"
+    term = f"txid{taxid}[Organism:exp] AND WGS[Strategy]"
     count = int(entrez.esearch("sra", term, retmax=0).get("Count", 0))
     if count == 0:
         return []
