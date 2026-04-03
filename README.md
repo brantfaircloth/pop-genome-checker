@@ -1,6 +1,6 @@
 # pop-genome-checker
 
-> **Note:** This project was created as an experiment using [Claude Code](https://claude.ai/code), Anthropic's AI coding assistant. The code was written entirely through a conversational session with Claude.
+> **Note:** This project was created as an experiment using [Claude Code](https://claude.ai/code), Anthropic's AI coding assistant. The code was written entirely through a conversational session with Claude.  I've never done this sort of thing before, but I'm actually pretty impressed... this was also using Sonnet 4.6 - so not even the most refined model.
 
 A CLI tool that finds the best genome assembly available for a given organism or taxon in NCBI, then checks the NCBI SRA database for population-level sequencing projects linked to those organisms.
 
