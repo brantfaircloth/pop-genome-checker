@@ -15,7 +15,7 @@ uv sync
 # Run the tool
 uv run pop-genome-checker --help
 uv run pop-genome-checker "Arabidopsis thaliana"
-uv run pop-genome-checker "Aves" --output results.csv --min-n50 30000000
+uv run pop-genome-checker "Aves" --output results.csv --min-n50 30
 uv run pop-genome-checker --taxon-file organisms.txt
 
 # Run tests
@@ -38,7 +38,7 @@ uv add --dev <package>
 ### Data flow
 
 1. **Taxon resolution** (`entrez.py`) — resolves a species name or higher taxon (e.g., "Aves") to an NCBI Taxonomy ID using the `taxonomy` database.
-2. **Assembly search** (`assembly.py`) — queries the NCBI `assembly` database for that taxon ID and all descendants, then filters for high-quality assemblies (assembly level = Chromosome/Complete, or N50 ≥ 30 Mbp).
+2. **Assembly search** (`assembly.py`) — queries the NCBI `assembly` database for that taxon ID and all descendants, selects the best assembly per species by contig N50, and filters by `--min-n50` (Mbp, default 30).
 3. **SRA search** (`sra.py`) — for each qualifying assembly's organism taxon ID, queries the NCBI `sra` database for linked experiments (strategy: WGS, AMPLICON, etc.).
 4. **Report** (`report.py`) — merges assembly and SRA results into a flat CSV.
 

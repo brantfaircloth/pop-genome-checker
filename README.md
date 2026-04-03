@@ -25,7 +25,7 @@ uv sync
 
 ```bash
 uv run pop-genome-checker "Arabidopsis thaliana" --email your@email.com
-uv run pop-genome-checker "Aves" --email your@email.com --output birds.csv --min-n50 30000000
+uv run pop-genome-checker "Aves" --email your@email.com --output birds.csv --min-n50 30
 uv run pop-genome-checker --taxon-file organisms.txt --email your@email.com --min-individuals 50
 ```
 
@@ -37,7 +37,7 @@ Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid
 |---|---|---|
 | `--output`, `-o` | `results.csv` | Output CSV path |
 | `--taxon-file`, `-f` | — | File with one taxon name per line |
-| `--min-n50` | `highest` | Integer. Minimum contig N50 (bp) to include a species |
+| `--min-n50` | `30` | Minimum contig N50 (Mbp) to include a species |
 | `--min-individuals` | `15` | Minimum individuals required in an SRA project |
 | `--email` | `$NCBI_EMAIL` | Email for NCBI Entrez API |
 | `--api-key` | `$NCBI_API_KEY` | NCBI API key for higher rate limits |

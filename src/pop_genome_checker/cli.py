@@ -28,9 +28,10 @@ def _make_progress(*columns) -> Progress:
 @click.option("--output", "-o", default="results.csv", show_default=True, help="Output CSV path.")
 @click.option("--email", default=None, help="Email for NCBI Entrez (required). Falls back to NCBI_EMAIL env var.")
 @click.option("--api-key", default=None, help="NCBI API key for higher rate limits. Falls back to NCBI_API_KEY env var.")
-@click.option("--min-n50", default=0, show_default=True, type=int, help="Minimum contig N50 (bp) for a species to be included.")
+@click.option("--min-n50", default=30, show_default=True, type=float, help="Minimum contig N50 in Mbp for a species to be included.")
 @click.option("--min-individuals", default=DEFAULT_MIN_INDIVIDUALS, show_default=True, type=int, help="Minimum number of individuals required in an SRA project.")
 def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
+    min_n50_bp = int(min_n50 * 1_000_000)
     """Find high-quality NCBI genome assemblies and check for SRA population data.
 
     TAXON can be a species binomial (e.g. "Arabidopsis thaliana") or a higher
@@ -80,7 +81,7 @@ def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
             def on_assembly_batch(done, total, _task=task, _p=p):
                 _p.update(_task, completed=done, total=total)
 
-            assemblies = search_assemblies(taxid, min_n50=min_n50, on_batch=on_assembly_batch)
+            assemblies = search_assemblies(taxid, min_n50=min_n50_bp, on_batch=on_assembly_batch)
 
         console.print(
             f"  [green]✓[/green] Found [bold]{len(assemblies)}[/bold] best-per-species assemblies"
