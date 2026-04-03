@@ -2,7 +2,13 @@
 
 > **Note:** This project was created as an experiment using [Claude Code](https://claude.ai/code), Anthropic's AI coding assistant. The code was written entirely through a conversational session with Claude.  I've never done this sort of thing before, but I'm actually pretty impressed... this was also using Sonnet 4.6 - so not even the most refined model.
 
-A CLI tool that finds the best genome assembly available for a given organism or taxon in NCBI, then checks the NCBI SRA database for population-level sequencing projects linked to those organisms.
+A CLI tool that finds the best genome assembly available for a given organism or taxonomic group in NCBI, then checks the NCBI SRA database for population-level sequencing projects linked to those organisms and limits the returned values by some minimum counts.
+
+## Why you would use this
+
+You want to teach a class using a decent genome and decent population level WGS data and you want to give your students options.  But you also don't want to waste your time trying to figure out what combo of "good genome" and "decent data" will do.
+
+I picked some reasonable defaults - contig N50 of 30 Mbp and count of individuals (in NCBI SRA) > 15.  Both parameters are adjustable.
 
 ## What it does
 
