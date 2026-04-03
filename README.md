@@ -8,7 +8,7 @@ A CLI tool that finds the best genome assembly available for a given organism or
 
 1. Resolves a taxon name (species binomial or higher taxon like "Aves") to an NCBI Taxonomy ID
 2. Fetches all genome assemblies for that taxon and selects the best one per species by contig N50
-3. Queries NCBI SRA for projects with data from more than 15 individuals for each species
+3. Queries NCBI SRA for projects with data from more than a minimum number of individuals for each species (default: 15)
 4. Outputs a CSV report
 
 ## Installation
@@ -25,8 +25,8 @@ uv sync
 
 ```bash
 uv run pop-genome-checker "Arabidopsis thaliana" --email your@email.com
-uv run pop-genome-checker "Aves" --email your@email.com --output birds.csv
-uv run pop-genome-checker --taxon-file organisms.txt --email your@email.com
+uv run pop-genome-checker "Aves" --email your@email.com --output birds.csv --min-n50 30000000
+uv run pop-genome-checker --taxon-file organisms.txt --email your@email.com --min-individuals 50
 ```
 
 Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid passing them on every call. An API key raises the NCBI rate limit from 3 to 10 requests/second, which makes a significant difference for large taxa.
@@ -36,8 +36,9 @@ Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid
 | Option | Default | Description |
 |---|---|---|
 | `--output`, `-o` | `results.csv` | Output CSV path |
-| `--min-n50` | `0` | Minimum contig N50 (bp) to include a species |
 | `--taxon-file`, `-f` | — | File with one taxon name per line |
+| `--min-n50` | `0` | Minimum contig N50 (bp) to include a species |
+| `--min-individuals` | `15` | Minimum individuals required in an SRA project |
 | `--email` | `$NCBI_EMAIL` | Email for NCBI Entrez API |
 | `--api-key` | `$NCBI_API_KEY` | NCBI API key for higher rate limits |
 
