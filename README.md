@@ -44,15 +44,21 @@ Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid
 
 ## Output
 
-The CSV contains one row per (species, SRA project) combination:
+The CSV contains one row per (species, SRA project) combination. Species with no qualifying SRA projects appear as a single row with blank SRA columns.
 
 | Column | Description |
 |---|---|
 | `accession` | NCBI Assembly accession |
+| `assembly_name` | Assembly name |
 | `organism` | Species name |
-| `assembly_level` | Chromosome / Scaffold / etc. |
-| `contig_n50` | Contig N50 of the best assembly |
-| `scaffold_n50` | Scaffold N50 of the best assembly |
+| `order` | Taxonomic order |
+| `family` | Taxonomic family |
+| `taxid` | NCBI Taxonomy ID (strain/subspecies level) |
+| `species_taxid` | NCBI Taxonomy ID (species level) |
+| `assembly_level` | Chromosome / Scaffold / Contig / etc. |
+| `contig_n50` | Contig N50 of the best assembly (bp) |
+| `scaffold_n50` | Scaffold N50 of the best assembly (bp) |
+| `refseq_category` | RefSeq category (e.g. reference genome) |
 | `sra_project` | SRA project accession (SRP/ERP/DRP) |
-| `sra_individuals` | Number of individuals in that project |
+| `sra_individuals` | Number of individuals (unique BioSamples) in that project |
 | `sra_runs` | Number of sequencing runs in that project |
