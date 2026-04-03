@@ -6,23 +6,30 @@ from .assembly import Assembly
 from .sra import SRAProject
 
 
-def build(assemblies: list[Assembly], sra_by_taxid: dict[str, list[SRAProject]]) -> pd.DataFrame:
+def build(
+    assemblies: list[Assembly],
+    sra_by_taxid: dict[str, list[SRAProject]],
+    lineage_by_taxid: dict[str, dict[str, str]],
+) -> pd.DataFrame:
     rows = []
     for a in assemblies:
+        lineage = lineage_by_taxid.get(a.species_taxid, {})
         projects = sra_by_taxid.get(a.species_taxid, [])
         if projects:
             for proj in projects:
-                rows.append(_row(a, proj))
+                rows.append(_row(a, proj, lineage))
         else:
-            rows.append(_row(a, None))
+            rows.append(_row(a, None, lineage))
     return pd.DataFrame(rows)
 
 
-def _row(a: Assembly, proj: SRAProject | None) -> dict:
+def _row(a: Assembly, proj: SRAProject | None, lineage: dict[str, str]) -> dict:
     return {
         "accession": a.accession,
         "assembly_name": a.assembly_name,
         "organism": a.organism,
+        "order": lineage.get("order", ""),
+        "family": lineage.get("family", ""),
         "taxid": a.taxid,
         "species_taxid": a.species_taxid,
         "assembly_level": a.assembly_level,

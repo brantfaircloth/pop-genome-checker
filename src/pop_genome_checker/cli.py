@@ -13,6 +13,7 @@ from . import entrez
 from .assembly import search as search_assemblies
 from .report import build, write
 from .sra import DEFAULT_MIN_INDIVIDUALS, search as search_sra
+from .taxonomy import fetch_lineage
 
 console = Console()
 
@@ -90,9 +91,15 @@ def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
         console.print("\n[yellow]No assemblies found.[/yellow]")
         sys.exit(0)
 
+    # --- Fetch taxonomic lineage ---
+    unique_taxids = {a.species_taxid for a in all_assemblies}
+    with _make_progress(SpinnerColumn(), TextColumn("{task.description}")) as p:
+        p.add_task(f"Fetching lineage for {len(unique_taxids)} species…")
+        lineage_by_taxid = fetch_lineage(list(unique_taxids))
+    console.print(f"  [green]✓[/green] Lineage fetched for [bold]{len(lineage_by_taxid)}[/bold] species")
+
     # --- Query SRA ---
     console.print()
-    unique_taxids = {a.species_taxid for a in all_assemblies}
     sra_by_taxid: dict = {}
 
     for taxid in unique_taxids:
@@ -120,7 +127,7 @@ def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
             console.print(f"  [dim]–[/dim] [italic]{organism}[/italic]: no qualifying SRA projects")
 
     # --- Build report & summary table ---
-    df = build(all_assemblies, sra_by_taxid)
+    df = build(all_assemblies, sra_by_taxid, lineage_by_taxid)
     write(df, output)
 
     console.print()
@@ -131,6 +138,8 @@ def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
 def _print_summary(df) -> None:
     table = Table(title="Results summary", show_lines=False, header_style="bold cyan")
     table.add_column("Organism")
+    table.add_column("Order")
+    table.add_column("Family")
     table.add_column("Best assembly", no_wrap=True)
     table.add_column("Level")
     table.add_column("Contig N50", justify="right")
@@ -146,6 +155,8 @@ def _print_summary(df) -> None:
         max_ind_str = str(int(max_ind)) if max_ind > 0 else "—"
         table.add_row(
             str(organism),
+            str(best_row.get("order", "")),
+            str(best_row.get("family", "")),
             str(best_row["accession"]),
             str(best_row["assembly_level"]),
             n50_str,
