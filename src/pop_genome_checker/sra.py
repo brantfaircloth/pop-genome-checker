@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from . import entrez
 
-MIN_INDIVIDUALS = 15
+DEFAULT_MIN_INDIVIDUALS = 15
 
 # SRA esummary ExpXml contains study and sample accessions in attributes like:
 #   <Study acc="SRP123456" .../>
@@ -26,9 +26,10 @@ class SRAProject:
 
 def search(
     taxid: str,
+    min_individuals: int = DEFAULT_MIN_INDIVIDUALS,
     on_batch: Callable[[int, int], None] | None = None,
 ) -> list[SRAProject]:
-    """Return SRA projects with > MIN_INDIVIDUALS individuals for this taxon.
+    """Return SRA projects with > min_individuals individuals for this taxon.
 
     on_batch(completed, total) is called after each batch fetch if provided.
     """
@@ -72,5 +73,5 @@ def search(
             run_count=len(project_runs[proj]),
         )
         for proj, samples in project_samples.items()
-        if len(samples) > MIN_INDIVIDUALS
+        if len(samples) > min_individuals
     ]

@@ -12,7 +12,7 @@ from rich.table import Table
 from . import entrez
 from .assembly import search as search_assemblies
 from .report import build, write
-from .sra import MIN_INDIVIDUALS, search as search_sra
+from .sra import DEFAULT_MIN_INDIVIDUALS, search as search_sra
 
 console = Console()
 
@@ -28,7 +28,8 @@ def _make_progress(*columns) -> Progress:
 @click.option("--email", default=None, help="Email for NCBI Entrez (required). Falls back to NCBI_EMAIL env var.")
 @click.option("--api-key", default=None, help="NCBI API key for higher rate limits. Falls back to NCBI_API_KEY env var.")
 @click.option("--min-n50", default=0, show_default=True, type=int, help="Minimum contig N50 (bp) for a species to be included.")
-def main(taxon, taxon_file, output, email, api_key, min_n50):
+@click.option("--min-individuals", default=DEFAULT_MIN_INDIVIDUALS, show_default=True, type=int, help="Minimum number of individuals required in an SRA project.")
+def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
     """Find high-quality NCBI genome assemblies and check for SRA population data.
 
     TAXON can be a species binomial (e.g. "Arabidopsis thaliana") or a higher
@@ -107,13 +108,13 @@ def main(taxon, taxon_file, output, email, api_key, min_n50):
             def on_sra_batch(done, total, _task=task, _p=p):
                 _p.update(_task, completed=done, total=total)
 
-            sra_by_taxid[taxid] = search_sra(taxid, on_batch=on_sra_batch)
+            sra_by_taxid[taxid] = search_sra(taxid, min_individuals=min_individuals, on_batch=on_sra_batch)
 
         n = len(sra_by_taxid[taxid])
         if n:
             console.print(
                 f"  [green]✓[/green] [italic]{organism}[/italic]: "
-                f"[bold]{n}[/bold] project(s) with >{MIN_INDIVIDUALS} individuals"
+                f"[bold]{n}[/bold] project(s) with >{min_individuals} individuals"
             )
         else:
             console.print(f"  [dim]–[/dim] [italic]{organism}[/italic]: no qualifying SRA projects")
