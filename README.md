@@ -35,7 +35,7 @@ uv run pop-genome-checker "Aves" --email your@email.com --output birds.csv --min
 uv run pop-genome-checker --taxon-file organisms.txt --email your@email.com --min-individuals 50
 ```
 
-Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid passing them on every call. An API key raises the NCBI rate limit from 3 to 10 requests/second, which makes a significant difference for large taxa.
+Set `NCBI_EMAIL` and optionally `NCBI_API_KEY` as environment variables to avoid passing them on every call. An API key raises the NCBI rate limit from 3 to 10 requests/second, which makes a significant difference for large taxonomic groups.
 
 ### Options
 
