@@ -13,7 +13,7 @@ I picked some reasonable defaults - contig N50 of 30 Mbp and count of individual
 ## What it does
 
 1. Resolves a taxon name (species binomial or higher taxon like "Aves") to an NCBI Taxonomy ID
-2. Fetches all genome assemblies for that taxon and selects the best one per species by contig N50
+2. Fetches all genome assemblies for that taxon and selects the best one per species by contig N50. This reverts to scaffold N50 if it can.
 3. Queries NCBI SRA for projects with data from more than a minimum number of individuals for each species (default: 15)
 4. Outputs a CSV report
 
