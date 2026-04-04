@@ -12,6 +12,7 @@ def _make(species_taxid="9606", contig_n50=None, scaffold_n50=None, accession="G
         assembly_level="Scaffold",
         contig_n50=contig_n50,
         scaffold_n50=scaffold_n50,
+        genome_size=None,
         refseq_category="",
         assembly_name="",
     )

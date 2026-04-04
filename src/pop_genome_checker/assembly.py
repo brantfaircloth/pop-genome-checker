@@ -15,6 +15,7 @@ class Assembly:
     assembly_level: str
     contig_n50: int | None
     scaffold_n50: int | None
+    genome_size: int | None
     refseq_category: str
     assembly_name: str
 
@@ -71,6 +72,7 @@ def _parse_summary(doc) -> Assembly:
         assembly_level=str(doc.get("AssemblyStatus", "")),
         contig_n50=_int(doc.get("ContigN50")),
         scaffold_n50=_int(doc.get("ScaffoldN50")),
+        genome_size=_int(doc.get("TotalLength")),
         refseq_category=str(doc.get("RefSeq_category", "")),
         assembly_name=str(doc.get("AssemblyName", "")),
     )

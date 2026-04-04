@@ -39,6 +39,10 @@ def main(taxon, taxon_file, output, email, api_key, min_n50, min_individuals):
     """
     console.print(Panel.fit("[bold cyan]pop-genome-checker[/bold cyan]", padding=(0, 2)))
 
+    if os.path.exists(output):
+        console.print(f"[red]Error:[/red] output file [bold]{output}[/bold] already exists. Remove it or choose a different --output path.")
+        sys.exit(1)
+
     email = email or os.environ.get("NCBI_EMAIL")
     if not email:
         console.print("[red]Error:[/red] provide --email or set NCBI_EMAIL.")

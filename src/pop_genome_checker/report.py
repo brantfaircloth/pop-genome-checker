@@ -41,6 +41,7 @@ def _row(a: Assembly, proj: SRAProject | None, lineage: dict[str, str]) -> dict:
         "assembly_level": a.assembly_level,
         "contig_n50": a.contig_n50,
         "scaffold_n50": a.scaffold_n50,
+        "genome_size": a.genome_size,
         "refseq_category": a.refseq_category,
         "sra_project": proj.project_accession if proj else "",
         "sra_individuals": proj.individual_count if proj else 0,
