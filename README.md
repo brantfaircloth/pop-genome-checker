@@ -8,7 +8,7 @@ A CLI tool that finds the best genome assembly available for a given organism or
 
 You want to teach a class using a decent genome and decent population level WGS data and you want to give your students options.  But you also don't want to waste your time trying to figure out what combo of "good genome" and "decent data" will do.
 
-I picked some reasonable defaults - contig N50 of 30 Mbp and count of individuals (in NCBI SRA) > 15.  Both parameters are adjustable.
+I picked some reasonable defaults - contig N50 of 30 Mbp and count of individuals (in NCBI SRA) > 15.  Both parameters are adjustable. And, if the stats are unclear, the code will fallback to scaffold N50.
 
 ## What it does
 
